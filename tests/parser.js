@@ -1,3 +1,40 @@
+function RunTests(tests) {
+    for (let i = 0; i < tests.length; i++) {
+        let test = tests[i];
+        const sonString = test[0];
+        const expected = test[1];
+        const name = test[2];
+
+        let threw = false;
+        let parsed = null;
+
+        console.log(`Running test #${i} (${name})`);
+        console.log(`\tSON: ${sonString}`);
+        console.log(`\tExpected: ${JSON.stringify(expected)}`);
+
+        try {
+            parsed = parseSON(sonString);
+            console.log(`\tParsed: ${JSON.stringify(parsed)}`);
+        }
+        catch(err) {
+            threw = true;
+
+            if (expected !== null) {
+                console.error("Expected not to throw an error, but did!");
+                console.error(err);
+            }
+        }
+
+        if (expected === null && threw === false) {
+            console.error("Expected to throw an error, but didn't!");
+        } else {
+            console.assert(JSON.stringify(parsed) == JSON.stringify(expected), "Parsed JSON doesn't match!");
+        }
+
+        console.log("\n");
+    }
+}
+
 /////////////////
 //    Tests    //
 /////////////////
